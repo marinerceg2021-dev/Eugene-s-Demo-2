@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eugene's Auto Repair | Mentor, Ohio</title>
+  <meta name="description" content="Eugene's Auto Repair in Mentor, Ohio. Honest pricing, fast turnaround, experienced mechanics. Call today for a free inspection." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            red:  { DEFAULT: '#C8102E', dark: '#A00D24', light: '#E8192F' },
+            blue: { DEFAULT: '#1B3F72', mid: '#1E4D8C', light: '#2563EB', pale: '#EFF4FB' },
+          },
+          fontFamily: {
+            sans:    ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Barlow Condensed', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .font-display { font-family: 'Barlow Condensed', sans-serif; }
+
+    /* Sticky header transition */
+    #site-header { transition: box-shadow 0.2s ease; }
+    #site-header.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.12); }
+
+    /* Mobile menu */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    /* Hero overlay */
+    .hero-overlay {
+      background: linear-gradient(100deg, rgba(27,63,114,0.93) 0%, rgba(27,63,114,0.78) 55%, rgba(27,63,114,0.35) 100%);
+    }
+
+    /* Step connector line */
+    .step-line::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(50% + 40px);
+      width: calc(100% - 80px);
+      height: 2px;
+      background: #E5E7EB;
+    }
+
+    /* Pulse animation for live badge */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+    .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+    /* Hover lift */
+    .card-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+
+    /* Fade up on scroll */
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1; transform: none; transition: none; }
+      .pulse-dot { animation: none; }
+    }
+
+    /* Quote modal */
+    #quote-backdrop { display: none; }
+    #quote-backdrop.open { display: flex; }
+    #quote-modal {
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      transform: translateY(20px) scale(0.97);
+      opacity: 0;
+    }
+    #quote-backdrop.open #quote-modal {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="font-sans text-gray-800 bg-white antialiased">
+
+  <!-- Skip link -->
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-red focus:text-white focus:px-4 focus:py-2 focus:rounded focus:font-semibold">Skip to main content</a>
+
+  <!-- ======================================================
+       HEADER
+  ====================================================== -->
+  <header id="site-header" class="sticky top-0 z-50 bg-white border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-5">
+      <div class="flex items-center justify-between h-16 gap-4">
+
+        <!-- Logo -->
+        <a href="#hero" class="flex flex-col leading-tight" aria-label="Eugene's Auto Repair home">
+          <span class="font-display font-700 text-xl tracking-wide uppercase text-blue">
+            Eugene's <span class="text-red">Auto Repair</span>
+          </span>
+          <span class="text-xs text-gray-400 tracking-widest uppercase font-medium">Mentor, Ohio</span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-7" aria-label="Main navigation">
+          <a href="#services" class="text-sm font-medium text-gray-600 hover:text-blue transition-colors">Services</a>
+          <a href="#why" class="text-sm font-medium text-gray-600 hover:text-blue transition-colors">Why Us</a>
+          <a href="#process" class="text-sm font-medium text-gray-600 hover:text-blue transition-colors">How It Works</a>
+          <a href="#reviews" class="text-sm font-medium text-gray-600 hover:text-blue transition-colors">Reviews</a>
+          <a href="#contact" class="text-sm font-medium text-gray-600 hover:text-blue transition-colors">Contact</a>
+        </nav>
+
+        <!-- Phone CTA -->
+        <a href="tel:+14403333333" class="hidden md:flex items-center gap-2 bg-red hover:bg-red-dark text-white text-sm font-semibold px-4 py-2 rounded transition-colors" aria-label="Call us">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.64 3.4a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l1.88-1.88a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          (440) 333-3333
+        </a>
+
+        <!-- Hamburger -->
+        <button id="nav-toggle" class="md:hidden flex flex-col gap-1.5 w-11 h-11 items-center justify-center rounded focus-visible:outline-2 focus-visible:outline-red" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="block w-5 h-0.5 bg-gray-700 transition-all" id="bar1"></span>
+          <span class="block w-5 h-0.5 bg-gray-700 transition-all" id="bar2"></span>
+          <span class="block w-5 h-0.5 bg-gray-700 transition-all" id="bar3"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden flex-col border-t border-gray-100 bg-white" role="navigation" aria-label="Mobile navigation">
+      <a href="#services" class="mobile-link px-5 py-3.5 text-sm font-medium text-gray-700 border-b border-gray-100 hover:bg-blue-pale hover:text-blue transition-colors">Services</a>
+      <a href="#why" class="mobile-link px-5 py-3.5 text-sm font-medium text-gray-700 border-b border-gray-100 hover:bg-blue-pale hover:text-blue transition-colors">Why Us</a>
+      <a href="#process" class="mobile-link px-5 py-3.5 text-sm font-medium text-gray-700 border-b border-gray-100 hover:bg-blue-pale hover:text-blue transition-colors">How It Works</a>
+      <a href="#reviews" class="mobile-link px-5 py-3.5 text-sm font-medium text-gray-700 border-b border-gray-100 hover:bg-blue-pale hover:text-blue transition-colors">Reviews</a>
+      <a href="#contact" class="mobile-link px-5 py-3.5 text-sm font-medium text-gray-700 border-b border-gray-100 hover:bg-blue-pale hover:text-blue transition-colors">Contact</a>
+      <div class="p-5">
+        <a href="tel:+14403333333" class="flex items-center justify-center gap-2 bg-red text-white font-semibold text-sm py-3 rounded w-full">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.64 3.4a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l1.88-1.88a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          (440) 333-3333
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+  <!-- ======================================================
+       HERO
+  ====================================================== -->
+  <section id="hero" class="relative min-h-[90svh] flex items-center overflow-hidden">
+    <!-- Background image -->
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=1600&q=80&auto=format&fit=crop"
+        alt=""
+        class="w-full h-full object-cover object-center"
+        aria-hidden="true"
+      />
+      <div class="hero-overlay absolute inset-0"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-5 py-20 w-full">
+      <div class="max-w-2xl">
+
+        <!-- Live badge -->
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
+          <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot" aria-hidden="true"></span>
+          <span class="text-white text-xs font-semibold tracking-widest uppercase">Open Today · Mentor, Ohio</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="font-display font-700 text-white leading-none mb-4" style="font-size:clamp(2.8rem,6vw,5rem);line-height:1.05;">
+          Your Neighborhood<br>
+          <span class="text-red-light">Auto Repair</span> Shop<br>
+          Done Right.
+        </h1>
+
+        <p class="text-blue-100 text-lg leading-relaxed mb-8 max-w-xl" style="color:rgba(255,255,255,0.82);">
+          Honest diagnostics. Fair prices. No surprises on your bill. Eugene's has been taking care of Mentor drivers for over 20 years — the shop your neighbors actually recommend.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-4 mb-12">
+          <a href="tel:+14403333333" class="inline-flex items-center gap-2.5 bg-red hover:bg-red-dark text-white font-semibold px-7 py-3.5 rounded-lg transition-colors text-base shadow-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.64 3.4a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l1.88-1.88a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Call Now
+          </a>
+          <button onclick="openQuote()" class="inline-flex items-center gap-2.5 bg-white hover:bg-gray-50 text-blue font-semibold px-7 py-3.5 rounded-lg transition-colors text-base shadow-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Schedule Service
+          </button>
+        </div>
+
+        <!-- Quick stats -->
+        <div class="flex flex-wrap gap-8">
+          <div>
+            <div class="font-display font-700 text-3xl text-white">20+</div>
+            <div class="text-xs text-white/60 tracking-widest uppercase mt-0.5">Years in Mentor</div>
+          </div>
+          <div class="w-px bg-white/20 self-stretch"></div>
+          <div>
+            <div class="font-display font-700 text-3xl text-white">4.6<span class="text-yellow-400">★</span></div>
+            <div class="text-xs text-white/60 tracking-widest uppercase mt-0.5">Google Rating</div>
+          </div>
+          <div class="w-px bg-white/20 self-stretch"></div>
+          <div>
+            <div class="font-display font-700 text-3xl text-white">$0</div>
+            <div class="text-xs text-white/60 tracking-widest uppercase mt-0.5">E-Check Fee</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       TRUST BAR
+  ====================================================== -->
+  <div class="bg-blue py-4">
+    <div class="max-w-6xl mx-auto px-5">
+      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+        <div class="flex items-center gap-2.5 text-white text-sm font-semibold tracking-wide">
+          <svg class="w-4 h-4 text-red-light flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          Honest Pricing
+        </div>
+        <div class="w-px h-4 bg-white/20 hidden sm:block"></div>
+        <div class="flex items-center gap-2.5 text-white text-sm font-semibold tracking-wide">
+          <svg class="w-4 h-4 text-red-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Fast Turnaround
+        </div>
+        <div class="w-px h-4 bg-white/20 hidden sm:block"></div>
+        <div class="flex items-center gap-2.5 text-white text-sm font-semibold tracking-wide">
+          <svg class="w-4 h-4 text-red-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          No Hidden Fees
+        </div>
+        <div class="w-px h-4 bg-white/20 hidden sm:block"></div>
+        <div class="flex items-center gap-2.5 text-white text-sm font-semibold tracking-wide">
+          <svg class="w-4 h-4 text-red-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Locally Owned · Mentor, OH
+        </div>
+        <div class="w-px h-4 bg-white/20 hidden sm:block"></div>
+        <div class="flex items-center gap-2.5 text-white text-sm font-semibold tracking-wide">
+          <svg class="w-4 h-4 text-red-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+          Free E-Check
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       SERVICES
+  ====================================================== -->
+  <section id="services" class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-5">
+
+      <div class="text-center mb-14 fade-up">
+        <p class="text-red font-semibold text-sm tracking-widest uppercase mb-3">What We Do</p>
+        <h2 class="font-display font-600 text-blue text-4xl md:text-5xl mb-4">Services We Offer</h2>
+        <p class="text-gray-500 max-w-xl mx-auto leading-relaxed">From a simple oil change to an electrical mystery no one else can figure out — we handle it.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Service cards -->
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">General Repair</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Suspension, steering, exhaust, cooling — whatever's wrong, we'll find it and fix it without padding your bill.</p>
+        </div>
+
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up" style="transition-delay:0.05s">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">Brake Service</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Squealing, grinding, or something just feels off? We inspect, advise, and only replace what's actually needed.</p>
+        </div>
+
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up" style="transition-delay:0.10s">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12c0 2.76 4.48 5 10 5s10-2.24 10-5M2 7c0 2.76 4.48 5 10 5s10-2.24 10-5"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">Oil Changes</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Quick, honest, and done right. We use quality oil and actually check what matters while we're under the hood.</p>
+        </div>
+
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up" style="transition-delay:0.05s">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">Diagnostics</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Check engine light on? We scan it and tell you what's actually wrong — not just what's profitable to fix.</p>
+        </div>
+
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up" style="transition-delay:0.10s">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">Electrical &amp; Alternator</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Dead battery, bad alternator, mystery electrical issues — Eugene specializes in the kind of stuff other shops give up on.</p>
+        </div>
+
+        <div class="card-lift bg-white rounded-xl p-7 border border-gray-100 shadow-sm fade-up" style="transition-delay:0.15s">
+          <div class="w-12 h-12 bg-blue-pale rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+            <svg class="w-6 h-6 text-blue" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-2">Tire Services</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Rotation, balancing, and inspection. We'll tell you when you need new tires — and when you don't.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       WHY CHOOSE US
+  ====================================================== -->
+  <section id="why" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Image -->
+        <div class="relative fade-up">
+          <img
+            src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=900&q=80&auto=format&fit=crop"
+            alt="Mechanic working on a vehicle at Eugene's Auto Repair"
+            class="rounded-2xl w-full h-[420px] object-cover shadow-lg"
+            loading="lazy"
+            width="900" height="420"
+          />
+          <!-- Floating card -->
+          <div class="absolute -bottom-5 -right-4 bg-white rounded-xl shadow-xl p-5 border border-gray-100 max-w-[200px]" aria-hidden="true">
+            <div class="font-display font-700 text-3xl text-blue leading-none">$2,000+</div>
+            <div class="text-xs text-gray-500 mt-1 leading-snug">Saved for one customer vs. dealer quote</div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="fade-up" style="transition-delay:0.1s">
+          <p class="text-red font-semibold text-sm tracking-widest uppercase mb-3">Why Eugene's</p>
+          <h2 class="font-display font-600 text-blue text-4xl md:text-5xl mb-6 leading-tight">A mechanic you can actually trust.</h2>
+          <p class="text-gray-500 leading-relaxed mb-8">After being nickeled and dimed at dealerships and chain shops, a lot of our customers end up here. They stay because Eugene tells them the truth — what's wrong, what it costs, and what can wait.</p>
+
+          <ul class="space-y-5" role="list">
+            <li class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-0.5">Honest pricing, always</div>
+                <div class="text-sm text-gray-500 leading-relaxed">You'll know exactly what you're paying for before we touch anything.</div>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-0.5">Most jobs done same day</div>
+                <div class="text-sm text-gray-500 leading-relaxed">We know you need your car. We don't sit on it.</div>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-0.5">Gets it right when others didn't</div>
+                <div class="text-sm text-gray-500 leading-relaxed">Customers come in after failed attempts elsewhere. Eugene figures it out.</div>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+                <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-0.5">Locally owned, personally run</div>
+                <div class="text-sm text-gray-500 leading-relaxed">This is Eugene's shop. He's the one looking at your car, not a service writer.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       HOW IT WORKS
+  ====================================================== -->
+  <section id="process" class="py-20 bg-blue-pale">
+    <div class="max-w-6xl mx-auto px-5">
+
+      <div class="text-center mb-14 fade-up">
+        <p class="text-red font-semibold text-sm tracking-widest uppercase mb-3">Simple Process</p>
+        <h2 class="font-display font-600 text-blue text-4xl md:text-5xl mb-4">How It Works</h2>
+        <p class="text-gray-500 max-w-lg mx-auto">Getting your car fixed shouldn't be complicated. Here's what to expect.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="fade-up text-center">
+          <div class="relative inline-flex items-center justify-center w-16 h-16 bg-blue text-white font-display font-700 text-2xl rounded-full mb-6 mx-auto shadow-md">1</div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-3">Schedule or Call</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Give us a call or fill out our quick form. Most things don't need an appointment — just come in.</p>
+        </div>
+
+        <div class="fade-up text-center" style="transition-delay:0.1s">
+          <div class="relative inline-flex items-center justify-center w-16 h-16 bg-blue text-white font-display font-700 text-2xl rounded-full mb-6 mx-auto shadow-md">2</div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-3">We Diagnose It</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Eugene looks it over and tells you exactly what's going on — honest, straightforward, no upsell.</p>
+        </div>
+
+        <div class="fade-up text-center" style="transition-delay:0.2s">
+          <div class="relative inline-flex items-center justify-center w-16 h-16 bg-blue text-white font-display font-700 text-2xl rounded-full mb-6 mx-auto shadow-md">3</div>
+          <h3 class="font-display font-600 text-blue text-xl uppercase tracking-wide mb-3">Fixed &amp; Back on the Road</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">We get it done, usually same day. You pick it up knowing exactly what was done and why.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       SPECIAL OFFER
+  ====================================================== -->
+  <div class="bg-red py-10">
+    <div class="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div>
+        <div class="font-display font-700 text-white text-2xl md:text-3xl uppercase tracking-wide">Free Inspection on Your First Visit</div>
+        <div class="text-white/80 text-sm mt-1">Bring your car in — we'll look it over at no charge and tell you where things stand.</div>
+      </div>
+      <a href="tel:+14403333333" class="flex-shrink-0 bg-white text-red font-semibold text-sm px-7 py-3.5 rounded-lg hover:bg-gray-50 transition-colors shadow whitespace-nowrap">
+        Claim This Offer
+      </a>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       REVIEWS
+  ====================================================== -->
+  <section id="reviews" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-5">
+
+      <div class="text-center mb-14 fade-up">
+        <p class="text-red font-semibold text-sm tracking-widest uppercase mb-3">Customer Reviews</p>
+        <h2 class="font-display font-600 text-blue text-4xl md:text-5xl mb-4">What Mentor Drivers Say</h2>
+        <div class="flex items-center justify-center gap-3 mt-2">
+          <span class="font-display font-700 text-blue text-4xl">4.6</span>
+          <div>
+            <div class="text-yellow-400 text-lg tracking-tight" aria-label="4.6 out of 5 stars">★★★★★</div>
+            <div class="text-gray-400 text-xs">Google Reviews · Mentor, OH</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Review 1: Chris Riddle -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"I first went to Eugene to get a second opinion when the dealer said I needed to replace $2,500 worth of parts. He diagnosed a completely different problem, and ended up saving me $2,000 in cost. I can't speak highly enough of the quality of work."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">CR</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">Chris Riddle</div>
+              <div class="text-xs text-gray-400">Local Guide · 37 reviews</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2: Anonymous -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up" style="transition-delay:0.05s">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"You're probably reading this review and have been reading reviews all day looking for a reputable mechanic. My car broke down on Thanksgiving weekend and I really needed it fixed. Eugene came through and I am beyond grateful."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">A</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">A Google User</div>
+              <div class="text-xs text-gray-400">4 years ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3: tj dunphy -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up" style="transition-delay:0.10s">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"These guys really go the extra mile. Alternator failed me 30 miles from home on a freezing morning. Called the shop and they helped me through the tow and had my car up and running in a day. Very grateful I found an honest repair shop."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">TJ</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">tj dunphy</div>
+              <div class="text-xs text-gray-400">Local Guide · 31 reviews</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4: Marissa Pirozzoli -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up" style="transition-delay:0.05s">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"I will never take my cars anywhere ever again. I've had the same problem for 6 months and took it just about everywhere. I ended up at Eugene's and I can't thank him enough for finally fixing what no one else could."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">MP</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">Marissa Pirozzoli</div>
+              <div class="text-xs text-gray-400">Local Guide · 13 reviews</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 5: Nick Bucurel -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up" style="transition-delay:0.10s">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"Remember what it used to be like when you had a go-to business you could trust? After being continually nickeled and dimed at commercial repair places, I sought to find a trustworthy local place. I found it at Eugene's."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">NB</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">Nick Bucurel</div>
+              <div class="text-xs text-gray-400">5 reviews · 7 years ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 6: margrita colabuno -->
+        <div class="card-lift bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col gap-4 fade-up" style="transition-delay:0.15s">
+          <div class="text-yellow-400 text-base" aria-label="5 stars">★★★★★</div>
+          <p class="text-gray-600 text-sm leading-relaxed flex-1">"Eugene is the best. I won't take my vehicle anywhere else and neither will my son (and his car is his baby.) Eugene is honest, smart, personable, and accommodating. And his prices are very fair."</p>
+          <div class="flex items-center gap-3 pt-2 border-t border-gray-200">
+            <div class="w-9 h-9 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0" aria-hidden="true">MC</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-800">margrita colabuno</div>
+              <div class="text-xs text-gray-400">Local Guide · 13 reviews</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       FINAL CTA
+  ====================================================== -->
+  <section class="py-20 bg-blue">
+    <div class="max-w-3xl mx-auto px-5 text-center fade-up">
+      <h2 class="font-display font-600 text-white text-4xl md:text-5xl mb-4">Ready to bring your car in?</h2>
+      <p class="text-white/70 leading-relaxed mb-10 max-w-lg mx-auto">No pressure. Call us, stop in, or fill out a quick form. We'll take a look and tell you what's actually going on.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="tel:+14403333333" class="inline-flex items-center gap-2.5 bg-red hover:bg-red-dark text-white font-semibold px-8 py-4 rounded-lg text-base transition-colors shadow-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.64 3.4a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l1.88-1.88a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          (440) 333-3333
+        </a>
+        <button onclick="openQuote()" class="inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-lg text-base transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Schedule Service
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       CONTACT / HOURS
+  ====================================================== -->
+  <section id="contact" class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-5">
+
+      <div class="text-center mb-14 fade-up">
+        <p class="text-red font-semibold text-sm tracking-widest uppercase mb-3">Find Us</p>
+        <h2 class="font-display font-600 text-blue text-4xl md:text-5xl">Hours &amp; Location</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <!-- Info -->
+        <div class="space-y-8 fade-up">
+
+          <div class="flex gap-4">
+            <div class="w-11 h-11 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0" aria-hidden="true">
+              <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-1">Address</div>
+              <div class="text-gray-700 font-medium">Mentor, Ohio<br><span class="text-sm text-gray-400">(Call for exact address)</span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-11 h-11 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0" aria-hidden="true">
+              <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.64 3.4a2 2 0 012-2.18h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l1.88-1.88a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-1">Phone</div>
+              <a href="tel:+14403333333" class="text-gray-700 font-medium hover:text-red transition-colors">(440) 333-3333</a>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-11 h-11 bg-blue-pale rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">
+              <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-2">Hours</div>
+              <table class="text-sm w-full" aria-label="Business hours">
+                <tbody class="divide-y divide-gray-100">
+                  <tr id="row-mon"><td class="py-1.5 pr-8 text-gray-700 font-medium">Monday</td><td class="py-1.5 text-gray-500">8:00 AM – 5:30 PM</td></tr>
+                  <tr id="row-tue"><td class="py-1.5 pr-8 text-gray-700 font-medium">Tuesday</td><td class="py-1.5 text-gray-500">8:00 AM – 5:30 PM</td></tr>
+                  <tr id="row-wed"><td class="py-1.5 pr-8 text-gray-700 font-medium">Wednesday</td><td class="py-1.5 text-gray-500">8:00 AM – 5:30 PM</td></tr>
+                  <tr id="row-thu"><td class="py-1.5 pr-8 text-gray-700 font-medium">Thursday</td><td class="py-1.5 text-gray-500">8:00 AM – 5:30 PM</td></tr>
+                  <tr id="row-fri"><td class="py-1.5 pr-8 text-gray-700 font-medium">Friday</td><td class="py-1.5 text-gray-500">8:00 AM – 5:00 PM</td></tr>
+                  <tr id="row-sat"><td class="py-1.5 pr-8 text-gray-700 font-medium">Saturday</td><td class="py-1.5 text-gray-500">By Appointment</td></tr>
+                  <tr id="row-sun"><td class="py-1.5 pr-8 text-gray-700 font-medium">Sunday</td><td class="py-1.5 text-gray-500">Closed</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Map placeholder -->
+        <div class="fade-up rounded-2xl overflow-hidden border border-gray-200 bg-blue-pale min-h-[340px] flex flex-col items-center justify-center gap-5 shadow-sm" style="transition-delay:0.1s">
+          <svg class="w-12 h-12 text-blue opacity-50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <p class="text-blue font-display font-600 text-lg uppercase tracking-widest">Mentor, Ohio</p>
+          <a href="https://maps.google.com/?q=Eugene's+Auto+Repair+Mentor+Ohio" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-blue text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-mid transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Open in Google Maps
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+  ====================================================== -->
+  <footer class="bg-blue py-12 border-t border-blue-mid">
+    <div class="max-w-6xl mx-auto px-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+
+        <div>
+          <div class="font-display font-600 text-white text-xl uppercase tracking-wide mb-2">Eugene's <span class="text-red-light">Auto Repair</span></div>
+          <div class="text-white/50 text-xs tracking-widest uppercase mb-4">Mentor, Ohio</div>
+          <p class="text-white/60 text-sm leading-relaxed">A local shop that's been taking care of Mentor drivers for over 20 years. Honest work, fair prices, no runaround.</p>
+        </div>
+
+        <div>
+          <div class="text-white/50 text-xs font-semibold tracking-widest uppercase mb-4">Quick Links</div>
+          <ul class="space-y-2.5" role="list">
+            <li><a href="#services" class="text-white/70 hover:text-white text-sm transition-colors">Services</a></li>
+            <li><a href="#why" class="text-white/70 hover:text-white text-sm transition-colors">Why Choose Us</a></li>
+            <li><a href="#process" class="text-white/70 hover:text-white text-sm transition-colors">How It Works</a></li>
+            <li><a href="#reviews" class="text-white/70 hover:text-white text-sm transition-colors">Customer Reviews</a></li>
+            <li><a href="#contact" class="text-white/70 hover:text-white text-sm transition-colors">Hours &amp; Location</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-white/50 text-xs font-semibold tracking-widest uppercase mb-4">Contact</div>
+          <div class="space-y-3 text-sm text-white/70">
+            <div><a href="tel:+14403333333" class="hover:text-white transition-colors">(440) 333-3333</a></div>
+            <div>Mentor, Ohio</div>
+            <div>Mon–Fri: 8:00 AM – 5:30 PM</div>
+            <div>Sat: By Appointment</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-white/40 text-xs">&copy; <span id="footer-year"></span> Eugene's Auto Repair — Mentor, Ohio. All rights reserved.</p>
+        <a href="https://maps.google.com/?q=Eugene's+Auto+Repair+Mentor+Ohio" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white/70 text-xs transition-colors">Find us on Google Maps</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================
+       FLOATING QUOTE BUTTON
+  ====================================================== -->
+  <button onclick="openQuote()" class="fixed bottom-7 right-7 z-40 flex items-center gap-2.5 bg-red hover:bg-red-dark text-white text-sm font-semibold px-5 py-3.5 rounded-full shadow-xl transition-all hover:-translate-y-1" aria-label="Get a free quote">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    Get a Quote
+  </button>
+
+  <!-- ======================================================
+       QUOTE MODAL
+  ====================================================== -->
+  <div id="quote-backdrop" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="quote-title">
+    <div id="quote-modal" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90svh] overflow-y-auto">
+
+      <div class="flex items-start justify-between p-6 pb-0">
+        <div>
+          <h2 id="quote-title" class="font-display font-600 text-blue text-2xl uppercase tracking-wide">Get a Free Quote</h2>
+          <p class="text-gray-400 text-sm mt-1">We'll get back to you shortly.</p>
+        </div>
+        <button onclick="closeQuote()" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors ml-4 flex-shrink-0" aria-label="Close">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="quote-form" novalidate class="p-6 grid grid-cols-2 gap-4" aria-label="Quote request">
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label for="q-name" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Name <span class="text-red" aria-hidden="true">*</span></label>
+          <input id="q-name" type="text" placeholder="John Smith" autocomplete="name" required aria-required="true" aria-describedby="q-name-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all" />
+          <span id="q-name-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label for="q-phone" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Phone <span class="text-red" aria-hidden="true">*</span></label>
+          <input id="q-phone" type="tel" placeholder="(440) 555-1234" autocomplete="tel" required aria-required="true" aria-describedby="q-phone-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all" />
+          <span id="q-phone-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label for="q-make" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Car Make <span class="text-red" aria-hidden="true">*</span></label>
+          <input id="q-make" type="text" placeholder="Toyota, Ford…" required aria-required="true" aria-describedby="q-make-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all" />
+          <span id="q-make-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-1 flex flex-col gap-1.5">
+          <label for="q-model" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Model <span class="text-red" aria-hidden="true">*</span></label>
+          <input id="q-model" type="text" placeholder="Camry, F-150…" required aria-required="true" aria-describedby="q-model-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all" />
+          <span id="q-model-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label for="q-year" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Year <span class="text-red" aria-hidden="true">*</span></label>
+          <select id="q-year" required aria-required="true" aria-describedby="q-year-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all appearance-none">
+            <option value="" disabled selected>Select year…</option>
+          </select>
+          <span id="q-year-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label for="q-service" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Service Needed <span class="text-red" aria-hidden="true">*</span></label>
+          <select id="q-service" required aria-required="true" aria-describedby="q-service-err" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all appearance-none">
+            <option value="" disabled selected>Select a service…</option>
+            <option>General Auto Repair</option>
+            <option>Brake Service</option>
+            <option>Oil Change</option>
+            <option>Diagnostics / Check Engine Light</option>
+            <option>Electrical / Alternator / Starter</option>
+            <option>Tire Service</option>
+            <option>E-Check (Free)</option>
+            <option>Other</option>
+          </select>
+          <span id="q-service-err" class="text-red text-xs hidden" role="alert">Required.</span>
+        </div>
+
+        <div class="col-span-2 flex flex-col gap-1.5">
+          <label for="q-notes" class="text-xs font-semibold text-gray-500 tracking-widest uppercase">Additional Details <span class="text-gray-300 font-normal normal-case" style="font-size:0.7rem;"> — optional</span></label>
+          <textarea id="q-notes" rows="3" placeholder="Describe the issue or anything helpful…" class="border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/10 transition-all resize-none"></textarea>
+        </div>
+
+        <div class="col-span-2">
+          <button type="submit" class="w-full bg-red hover:bg-red-dark text-white font-semibold py-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Quote Request
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Success -->
+      <div id="quote-success" class="hidden p-8 text-center flex-col items-center gap-4">
+        <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto" aria-hidden="true">
+          <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="font-display font-600 text-blue text-2xl uppercase">Quote Sent!</div>
+        <p class="text-gray-500 text-sm leading-relaxed">Thanks — we'll be in touch soon to discuss your vehicle.</p>
+        <button onclick="resetQuote()" class="mt-2 text-sm text-blue hover:underline">Submit another</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================
+       SCRIPTS
+  ====================================================== -->
+  <script>
+    // Header scroll shadow
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8), { passive: true });
+
+    // Mobile nav
+    const toggle = document.getElementById('nav-toggle');
+    const menu   = document.getElementById('mobile-menu');
+    const b1 = document.getElementById('bar1'), b2 = document.getElementById('bar2'), b3 = document.getElementById('bar3');
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      b1.style.transform = open ? 'translateY(8px) rotate(45deg)' : '';
+      b2.style.opacity   = open ? '0' : '1';
+      b3.style.transform = open ? 'translateY(-8px) rotate(-45deg)' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      b1.style.transform = b3.style.transform = '';
+      b2.style.opacity = '1';
+    }));
+
+    // Fade-up observer
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+    // Highlight today's hours
+    const days = ['sun','mon','tue','wed','thu','fri','sat'];
+    const todayRow = document.getElementById('row-' + days[new Date().getDay()]);
+    if (todayRow) todayRow.querySelectorAll('td').forEach(td => { td.classList.add('text-red', 'font-semibold'); td.classList.remove('text-gray-700','text-gray-500'); });
+
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // Year dropdown
+    const ySel = document.getElementById('q-year');
+    const curY = new Date().getFullYear();
+    for (let y = curY + 1; y >= 1970; y--) {
+      const o = document.createElement('option'); o.value = o.textContent = y; ySel.appendChild(o);
+    }
+
+    // Quote modal
+    let lastFocus;
+    function openQuote() {
+      lastFocus = document.activeElement;
+      document.getElementById('quote-backdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeQuote() {
+      document.getElementById('quote-backdrop').classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    function resetQuote() {
+      document.getElementById('quote-form').reset();
+      document.getElementById('quote-form').style.display = '';
+      document.getElementById('quote-success').classList.add('hidden');
+      document.getElementById('quote-success').classList.remove('flex');
+    }
+    document.getElementById('quote-backdrop').addEventListener('click', e => { if (e.target === document.getElementById('quote-backdrop')) closeQuote(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('quote-backdrop').classList.contains('open')) closeQuote(); });
+
+    // Form validation
+    const form = document.getElementById('quote-form');
+    const requiredFields = ['q-name','q-phone','q-make','q-model','q-year','q-service'];
+    requiredFields.forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('blur', () => validate(el));
+      el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') validate(el); });
+    });
+    function validate(el) {
+      const err = document.getElementById(el.id + '-err');
+      const ok = el.value.trim() !== '';
+      el.setAttribute('aria-invalid', String(!ok));
+      el.classList.toggle('border-red', !ok);
+      err && (ok ? err.classList.add('hidden') : err.classList.remove('hidden'));
+      return ok;
+    }
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let valid = true, first = null;
+      requiredFields.forEach(id => { const el = document.getElementById(id); if (!validate(el)) { valid = false; first = first || el; } });
+      if (!valid) { first.focus(); return; }
+      form.style.display = 'none';
+      const s = document.getElementById('quote-success');
+      s.classList.remove('hidden'); s.classList.add('flex');
+    });
+  </script>
+
+</body>
+</html>
